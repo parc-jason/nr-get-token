@@ -61,3 +61,4 @@ parameters:
 - name: APP_NAME
   description: Application name
   required: true
+  value: "redir"

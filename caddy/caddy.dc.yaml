@@ -82,15 +82,6 @@ objects:
           ports:
           - containerPort: 2015
             protocol: TCP
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: "${PATH_ROOT}"
-              port: 2015
-              scheme: HTTP
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 10
           resources:
             requests:
               cpu: "${CPU_REQUEST}"
@@ -119,6 +110,7 @@ parameters:
 - name: APP_NAME
   description: Application name
   required: true
+  value: "redir"
 - name: CPU_REQUEST
   description: Requested CPU per pod (in millicores ex. 500m)
   required: true
