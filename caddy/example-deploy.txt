@@ -1,0 +1,19 @@
+export proj=$getokp
+export REPO_NAME=nr-get-token
+export JOB_NAME=quikfix
+export SOURCE_REPO_URL=https://github.com/parc-jason/nr-get-token.git
+export SOURCE_REPO_REF=feature/caddy-redir
+export APP_NAME=redir
+export NAMESPACE=$proj
+export PATH_ROOT=/
+export HOST_ROUTE=getok-master-k8vopl-prod.pathfinder.gov.bc.ca
+
+
+oc -n $proj process -f caddy.bc.yaml -p REPO_NAME=$REPO_NAME -p JOB_NAME=$JOB_NAME -p SOURCE_REPO_URL=$SOURCE_REPO_URL -p SOURCE_REPO_REF=$SOURCE_REPO_REF -p APP_NAME=$APP_NAME -o yaml | oc -n $proj create -f -
+
+oc -n $proj start-build $APP_NAME-$JOB_NAME-caddy
+
+oc -n $proj tag $REPO_NAME-caddy:latest $REPO_NAME-caddy:$JOB_NAME
+
+oc -n $proj process -f caddy.dc.yaml -p REPO_NAME=$REPO_NAME -p JOB_NAME=$JOB_NAME -p NAMESPACE=$NAMESPACE -p APP_NAME=$APP_NAME -p PATH_ROOT=$PATH_ROOT -p HOST_ROUTE=$HOST_ROUTE -o yaml | oc -n $proj create -f -
+
