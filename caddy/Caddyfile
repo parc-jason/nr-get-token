@@ -1,0 +1,3 @@
+*:{$CADDY_SERVICE_PORT} {  
+  redir {$CADDY_REDIRECT_URI}{uri}
+}
